@@ -37,6 +37,222 @@ ARTIFACT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "artifac
 
 st.set_page_config(page_title="Jobs & Skills ML Pipeline", layout="wide", page_icon="📊")
 
+# ──────────────────────────────────────────────────────────
+# CUSTOM CSS THEME
+# ──────────────────────────────────────────────────────────
+st.markdown("""
+<style>
+/* ── Global ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ── Main container breathing room ── */
+.block-container {
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+}
+
+/* ── Sidebar ── */
+section[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #1B2838 0%, #2C3E50 100%);
+}
+section[data-testid="stSidebar"] .stMarkdown p,
+section[data-testid="stSidebar"] .stMarkdown li,
+section[data-testid="stSidebar"] .stMarkdown h1,
+section[data-testid="stSidebar"] .stMarkdown h2,
+section[data-testid="stSidebar"] .stMarkdown h3 {
+    color: #ECF0F1 !important;
+}
+section[data-testid="stSidebar"] hr {
+    border-color: rgba(255,255,255,0.15);
+}
+
+/* ── Tab styling ── */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 8px;
+    background: #f8f9fc;
+    padding: 6px 12px;
+    border-radius: 12px;
+}
+.stTabs [data-baseweb="tab"] {
+    height: 48px;
+    padding: 0 20px;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: #555;
+    background: transparent;
+}
+.stTabs [aria-selected="true"] {
+    background: white !important;
+    color: #1B2838 !important;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-radius: 10px;
+}
+.stTabs [data-baseweb="tab-highlight"] {
+    background-color: #636EFA !important;
+    height: 3px;
+    border-radius: 3px;
+}
+
+/* ── Metric cards ── */
+div[data-testid="stMetric"] {
+    background: white;
+    border: 1px solid #e8ecf1;
+    border-top: 4px solid #636EFA;
+    border-radius: 12px;
+    padding: 16px 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+div[data-testid="stMetric"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99,110,250,0.12);
+}
+div[data-testid="stMetric"] label {
+    color: #6B7280 !important;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+div[data-testid="stMetric"] [data-testid="stMetricValue"] {
+    color: #1B2838 !important;
+    font-weight: 700;
+}
+div[data-testid="stMetric"] [data-testid="stMetricDelta"] {
+    color: #636EFA !important;
+    font-weight: 500;
+}
+
+/* ── Dataframe styling ── */
+div[data-testid="stDataFrame"] {
+    border: 1px solid #e8ecf1;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+/* ── Expander styling ── */
+div[data-testid="stExpander"] {
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+div[data-testid="stExpander"] summary {
+    font-weight: 600;
+    color: #2C3E50;
+}
+
+/* ── Section headers ── */
+h3 {
+    color: #1B2838 !important;
+    font-weight: 700 !important;
+    border-left: 4px solid #636EFA;
+    padding-left: 12px;
+    margin-top: 1.5rem !important;
+}
+
+/* ── Styled dividers ── */
+hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, #636EFA 0%, #e8ecf1 50%, transparent 100%);
+    margin: 2rem 0;
+}
+
+/* ── Info/callout boxes ── */
+.callout-box {
+    background: linear-gradient(135deg, #f0f4ff 0%, #f8f9fc 100%);
+    border-left: 5px solid #636EFA;
+    border-radius: 0 12px 12px 0;
+    padding: 20px 24px;
+    margin: 16px 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+.callout-box-green {
+    background: linear-gradient(135deg, #f0faf5 0%, #f8fcf9 100%);
+    border-left: 5px solid #00CC96;
+    border-radius: 0 12px 12px 0;
+    padding: 20px 24px;
+    margin: 16px 0;
+}
+.callout-box-purple {
+    background: linear-gradient(135deg, #f5f0ff 0%, #faf8fc 100%);
+    border-left: 5px solid #AB63FA;
+    border-radius: 0 12px 12px 0;
+    padding: 20px 24px;
+    margin: 16px 0;
+}
+
+/* ── Prediction result card ── */
+.prediction-card {
+    background: linear-gradient(135deg, #636EFA 0%, #4854d4 100%);
+    border-radius: 16px;
+    padding: 28px 32px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 8px 32px rgba(99,110,250,0.25);
+    margin: 16px 0;
+}
+.prediction-card .pred-value {
+    font-size: 3rem;
+    font-weight: 800;
+    margin: 8px 0;
+}
+.prediction-card .pred-label {
+    font-size: 1rem;
+    opacity: 0.9;
+    font-weight: 500;
+}
+.prediction-card .pred-subtitle {
+    font-size: 0.9rem;
+    opacity: 0.75;
+    margin-top: 8px;
+}
+
+/* ── Feature input panel ── */
+.input-panel {
+    background: #f8f9fc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 24px;
+    margin: 12px 0;
+}
+
+/* ── Selectbox & slider polish ── */
+div[data-baseweb="select"] {
+    border-radius: 8px;
+}
+
+/* ── Plotly chart containers ── */
+.stPlotlyChart {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* ── Badge / pill styling ── */
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin: 2px 4px;
+}
+.badge-blue { background: #EEF2FF; color: #636EFA; }
+.badge-green { background: #ECFDF5; color: #059669; }
+.badge-purple { background: #F5F3FF; color: #7C3AED; }
+.badge-orange { background: #FFF7ED; color: #D97706; }
+</style>
+""", unsafe_allow_html=True)
+
 @st.cache_data
 def load_data():
     df = pd.read_parquet(f"{ARTIFACT_DIR}/processed_data.parquet")
@@ -122,13 +338,80 @@ DISPLAY_TO_SAFE = {
 }
 
 # ──────────────────────────────────────────────────────────
+# UNIFIED PLOTLY THEME
+# ──────────────────────────────────────────────────────────
+PLOT_COLORS = ['#636EFA', '#EF553B', '#00CC96', '#AB63FA', '#FFA15A', '#19D3F3', '#FF6692']
+
+plotly_template = go.layout.Template(
+    layout=go.Layout(
+        font=dict(family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif", size=13, color="#2C3E50"),
+        title=dict(font=dict(size=18, color="#1B2838"), x=0.0, xanchor='left'),
+        paper_bgcolor='white',
+        plot_bgcolor='#FAFBFD',
+        colorway=PLOT_COLORS,
+        xaxis=dict(gridcolor='#E8ECF1', linecolor='#D1D5DB', linewidth=1, zeroline=False),
+        yaxis=dict(gridcolor='#E8ECF1', linecolor='#D1D5DB', linewidth=1, zeroline=False),
+        margin=dict(l=60, r=30, t=60, b=50),
+        hoverlabel=dict(bgcolor='white', bordercolor='#636EFA', font_size=13),
+        legend=dict(bgcolor='rgba(255,255,255,0.85)', bordercolor='#E8ECF1', borderwidth=1, font=dict(size=12)),
+    )
+)
+import plotly.io as pio
+pio.templates['custom'] = plotly_template
+pio.templates.default = 'plotly+custom'
+
+# ──────────────────────────────────────────────────────────
 # SIDEBAR
 # ──────────────────────────────────────────────────────────
-st.sidebar.markdown("**Dataset Info**")
-st.sidebar.markdown(f"- Samples: **{len(df):,}**")
-st.sidebar.markdown(f"- Features: **{len(feature_cols)}**")
-st.sidebar.markdown(f"- Target: **num_skills**")
-st.sidebar.markdown(f"- Models: **7** (incl. MLP)")
+st.sidebar.markdown("""
+<div style="text-align:center; padding: 20px 0 10px 0;">
+    <div style="font-size: 2.5rem; margin-bottom: 4px;">📊</div>
+    <div style="font-size: 1.3rem; font-weight: 700; color: #ECF0F1;">Jobs & Skills</div>
+    <div style="font-size: 0.85rem; color: #95A5A6; font-weight: 400;">ML Pipeline Dashboard</div>
+</div>
+""", unsafe_allow_html=True)
+
+st.sidebar.markdown("---")
+
+st.sidebar.markdown("""
+<div style="background: rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; margin: 8px 0;">
+    <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #95A5A6; margin-bottom: 10px; font-weight: 600;">Dataset Overview</div>
+    <div style="display: flex; justify-content: space-between; margin: 8px 0;">
+        <span style="color: #BDC3C7;">Samples</span>
+        <span style="color: #ECF0F1; font-weight: 700;">""" + f"{len(df):,}" + """</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; margin: 8px 0;">
+        <span style="color: #BDC3C7;">Features</span>
+        <span style="color: #ECF0F1; font-weight: 700;">""" + str(len(feature_cols)) + """</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; margin: 8px 0;">
+        <span style="color: #BDC3C7;">Target</span>
+        <span style="color: #ECF0F1; font-weight: 700;">num_skills</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; margin: 8px 0;">
+        <span style="color: #BDC3C7;">Models</span>
+        <span style="color: #ECF0F1; font-weight: 700;">7 (incl. MLP)</span>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+st.sidebar.markdown("---")
+
+st.sidebar.markdown("""
+<div style="background: rgba(99,110,250,0.15); border-radius: 12px; padding: 16px; margin: 8px 0;">
+    <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #95A5A6; margin-bottom: 8px; font-weight: 600;">Best Model</div>
+    <div style="color: #636EFA; font-weight: 700; font-size: 1.1rem;">LightGBM</div>
+    <div style="color: #BDC3C7; font-size: 0.85rem; margin-top: 4px;">RMSE: 10.48 &nbsp;|&nbsp; R&sup2;: 0.205</div>
+</div>
+""", unsafe_allow_html=True)
+
+st.sidebar.markdown("---")
+st.sidebar.markdown("""
+<div style="text-align: center; padding: 8px 0; color: #7F8C8D; font-size: 0.75rem;">
+    MSIS 522B &bull; LinkedIn Job Postings<br>
+    Predictive Analytics Project
+</div>
+""", unsafe_allow_html=True)
 
 # ──────────────────────────────────────────────────────────
 # HORIZONTAL TABS
@@ -145,43 +428,51 @@ tab1, tab2, tab3, tab4 = st.tabs([
 # ──────────────────────────────────────────────────────────
 with tab1:
     st.title("📋 Executive Summary")
-    st.markdown("### Jobs & Skills Prediction Pipeline")
 
     st.markdown("""
-    ---
-    #### Dataset & Prediction Task
-    This project analyzes **LinkedIn job postings** sourced from Kaggle, consisting of two datasets:
-    `linkedin_job_postings.csv` (job metadata including title, company, location, seniority level, and
-    work type) and `job_skills.csv` (individual skills listed per posting). After merging on `job_link`
-    and feature engineering, the final dataset contains **80,000 job postings** with **21 features**
-    across the United States, United Kingdom, Canada, and Australia. The features include 10 numerical
-    variables (title length, company name length, average skill name length, day of week, etc.) and
-    11 binary flags indicating the presence of common skills (communication, management, data, leadership,
-    Python, Excel, sales, marketing, project management, customer). The **prediction target** is
-    `num_skills` — the count of distinct skills listed per job posting — making this a **regression task**.
+    <div class="callout-box">
+        <h4 style="margin-top:0; color:#1B2838;">Dataset & Prediction Task</h4>
+        This project analyzes <strong>LinkedIn job postings</strong> sourced from Kaggle, consisting of two datasets:
+        <code>linkedin_job_postings.csv</code> (job metadata including title, company, location, seniority level, and
+        work type) and <code>job_skills.csv</code> (individual skills listed per posting). After merging on <code>job_link</code>
+        and feature engineering, the final dataset contains <strong>80,000 job postings</strong> with <strong>21 features</strong>
+        across the United States, United Kingdom, Canada, and Australia. The features include 10 numerical
+        variables (title length, company name length, average skill name length, day of week, etc.) and
+        11 binary flags indicating the presence of common skills (communication, management, data, leadership,
+        Python, Excel, sales, marketing, project management, customer). The <strong>prediction target</strong> is
+        <code>num_skills</code> — the count of distinct skills listed per job posting — making this a <strong>regression task</strong>.
+    </div>
+    """, unsafe_allow_html=True)
 
-    #### Why This Matters
-    Understanding what drives skill requirements in job postings has direct value across the labor market.
-    **Job seekers** can better prepare by knowing which role attributes correlate with broader skill
-    demands — for example, remote positions require ~24 skills on average versus ~20 for onsite roles.
-    **Recruiters and hiring managers** can set more realistic expectations when drafting postings, avoiding
-    the common pitfall of listing too many or too few skills. **Job platform designers** (LinkedIn, Indeed)
-    could use such a model to auto-suggest skill tags for new postings, improving discoverability.
-    **Workforce analysts** gain insight into how skill demands vary by geography, seniority, and industry,
-    informing education and training policy.
+    st.markdown("""
+    <div class="callout-box-green">
+        <h4 style="margin-top:0; color:#059669;">Why This Matters</h4>
+        Understanding what drives skill requirements in job postings has direct value across the labor market.
+        <strong>Job seekers</strong> can better prepare by knowing which role attributes correlate with broader skill
+        demands — for example, remote positions require ~24 skills on average versus ~20 for onsite roles.
+        <strong>Recruiters and hiring managers</strong> can set more realistic expectations when drafting postings, avoiding
+        the common pitfall of listing too many or too few skills. <strong>Job platform designers</strong> (LinkedIn, Indeed)
+        could use such a model to auto-suggest skill tags for new postings, improving discoverability.
+        <strong>Workforce analysts</strong> gain insight into how skill demands vary by geography, seniority, and industry,
+        informing education and training policy.
+    </div>
+    """, unsafe_allow_html=True)
 
-    #### Approach & Key Findings
-    We trained **seven models** — Linear Regression, Lasso, Ridge, CART (decision tree), Random Forest,
-    LightGBM, and a Multi-Layer Perceptron (MLP) neural network — using a 70/30 train/test split.
-    Tree-based models (CART, RF, LightGBM) were tuned via GridSearchCV with 5-fold cross-validation.
-    **LightGBM achieved the best test-set performance** (RMSE = 10.48, R² = 0.205), followed by the
-    MLP (RMSE = 10.63) and Random Forest (RMSE = 10.70). Linear models served as baselines
-    (RMSE ≈ 10.91). SHAP analysis revealed that the binary skill-presence flags (`has_management`,
-    `has_data`, `has_communication`) are the strongest predictors — postings that mention broad,
-    cross-functional skills tend to list more total skills. Geographic and temporal features had
-    weak effects. These insights suggest that **role complexity, not technical specialization**,
-    is the primary driver of skill breadth in job postings.
-    """)
+    st.markdown("""
+    <div class="callout-box-purple">
+        <h4 style="margin-top:0; color:#7C3AED;">Approach & Key Findings</h4>
+        We trained <strong>seven models</strong> — Linear Regression, Lasso, Ridge, CART (decision tree), Random Forest,
+        LightGBM, and a Multi-Layer Perceptron (MLP) neural network — using a 70/30 train/test split.
+        Tree-based models (CART, RF, LightGBM) were tuned via GridSearchCV with 5-fold cross-validation.
+        <strong>LightGBM achieved the best test-set performance</strong> (RMSE = 10.48, R&sup2; = 0.205), followed by the
+        MLP (RMSE = 10.63) and Random Forest (RMSE = 10.70). Linear models served as baselines
+        (RMSE &asymp; 10.91). SHAP analysis revealed that the binary skill-presence flags (<code>has_management</code>,
+        <code>has_data</code>, <code>has_communication</code>) are the strongest predictors — postings that mention broad,
+        cross-functional skills tend to list more total skills. Geographic and temporal features had
+        weak effects. These insights suggest that <strong>role complexity, not technical specialization</strong>,
+        is the primary driver of skill breadth in job postings.
+    </div>
+    """, unsafe_allow_html=True)
 
     # Key metrics row
     col1, col2, col3, col4 = st.columns(4)
@@ -216,45 +507,55 @@ with tab1:
     )
 
     st.markdown("---")
-    st.markdown("#### Key Findings")
+    st.markdown("### Key Findings")
 
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("""
-        **Model Insights:**
-        - **LightGBM** achieves the best cross-validated R² and lowest RMSE, confirming gradient boosting's
-          ability to capture non-linear feature interactions
-        - **Random Forest** comes in second, with ensemble averaging reducing variance
-        - **Linear models** (OLS, Ridge, Lasso) perform comparably to each other; Ridge and OLS are nearly
-          identical, while Lasso slightly penalizes less important features
-        - **CART** (single decision tree) has the weakest performance due to high variance and overfitting risk
-        """)
+        <div class="callout-box" style="border-left-color: #EF553B;">
+            <h5 style="margin-top:0; color:#EF553B;">Model Insights</h5>
+            <ul style="margin-bottom:0;">
+                <li><strong>LightGBM</strong> achieves the best cross-validated R&sup2; and lowest RMSE, confirming gradient boosting's
+                  ability to capture non-linear feature interactions</li>
+                <li><strong>Random Forest</strong> comes in second, with ensemble averaging reducing variance</li>
+                <li><strong>Linear models</strong> (OLS, Ridge, Lasso) perform comparably to each other; Ridge and OLS are nearly
+                  identical, while Lasso slightly penalizes less important features</li>
+                <li><strong>CART</strong> (single decision tree) has the weakest performance due to high variance and overfitting risk</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
     with col2:
         st.markdown("""
-        **Feature Insights (from SHAP):**
-        - **Average skill name length** is the strongest predictor — jobs with longer/more specific skill
-          names tend to require more skills overall
-        - **Job title length** and **word count** contribute meaningfully, suggesting more complex roles
-          (with longer titles) demand broader skill sets
-        - **Skill flags** (has_communication, has_management, etc.) act as strong signals for skill-rich
-          postings
-        - **Geographic and temporal features** have moderate effects, with some states and posting months
-          showing subtle patterns
-        """)
+        <div class="callout-box" style="border-left-color: #00CC96;">
+            <h5 style="margin-top:0; color:#059669;">Feature Insights (from SHAP)</h5>
+            <ul style="margin-bottom:0;">
+                <li><strong>Average skill name length</strong> is the strongest predictor — jobs with longer/more specific skill
+                  names tend to require more skills overall</li>
+                <li><strong>Job title length</strong> and <strong>word count</strong> contribute meaningfully, suggesting more complex roles
+                  (with longer titles) demand broader skill sets</li>
+                <li><strong>Skill flags</strong> (has_communication, has_management, etc.) act as strong signals for skill-rich
+                  postings</li>
+                <li><strong>Geographic and temporal features</strong> have moderate effects, with some states and posting months
+                  showing subtle patterns</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
 
     st.markdown("---")
-    st.markdown("#### Methodology")
-    st.markdown("""
-    1. **Data Merging**: LinkedIn job postings joined with job skills on `job_link`
-    2. **Feature Engineering**: 21 features derived from categorical encoding, text metrics, date extraction,
-       and binary skill presence flags
-    3. **Modeling**: Six algorithms trained with 5-fold cross-validation — Linear Regression, Lasso, Ridge,
-       CART, Random Forest, LightGBM
-    4. **Explainability**: SHAP (SHapley Additive exPlanations) values computed for all six models using
-       TreeExplainer and LinearExplainer
-    5. **Interactive Exploration**: Feature Selection Lab allows dynamic re-training with user-selected feature
-       subsets to observe performance impact
-    """)
+    with st.expander("📘 Methodology (click to expand)", expanded=False):
+        st.markdown("""
+        1. **Data Merging**: LinkedIn job postings joined with job skills on `job_link`
+        2. **Feature Engineering**: 21 features derived from categorical encoding, text metrics, date extraction,
+           and binary skill presence flags
+        3. **Modeling**: Seven algorithms trained — Linear Regression, Lasso, Ridge,
+           CART, Random Forest, LightGBM, MLP — with 70/30 train/test split
+        4. **Hyperparameter Tuning**: GridSearchCV (5-fold CV) for CART, Random Forest, LightGBM;
+           Early Stopping for MLP
+        5. **Explainability**: SHAP (SHapley Additive exPlanations) values computed for all six tree/linear models
+           using TreeExplainer and LinearExplainer
+        6. **Interactive Prediction**: Users can set feature values via sliders/dropdowns and see real-time
+           predictions with SHAP waterfall explanations
+        """)
 
 
 # ──────────────────────────────────────────────────────────
@@ -750,7 +1051,12 @@ with tab4:
     # ── INTERACTIVE PREDICTION ──
     st.markdown("---")
     st.markdown("### 🎯 Interactive Prediction")
-    st.markdown("Set feature values below and see what the model predicts in real time.")
+    st.markdown("""
+    <div class="callout-box" style="border-left-color: #FFA15A;">
+        Set feature values below and see what the model predicts in real time. Adjust sliders,
+        dropdowns, and checkboxes, then scroll down to see the predicted skill count and SHAP explanation.
+    </div>
+    """, unsafe_allow_html=True)
 
     # Model selector
     pred_model_name = st.selectbox("Choose prediction model:", list(models.keys()), index=5)  # default LightGBM
@@ -759,6 +1065,7 @@ with tab4:
 
     # Feature inputs — select the most meaningful features for manual setting
     st.markdown("#### Set Feature Values")
+    st.markdown('<div class="input-panel">', unsafe_allow_html=True)
     col1, col2, col3 = st.columns(3)
 
     with col1:
@@ -784,6 +1091,8 @@ with tab4:
         input_has_data = st.checkbox("Has Data", value=False)
         input_has_pm = st.checkbox("Has Project Management", value=False)
         input_has_cust = st.checkbox("Has Customer", value=False)
+
+    st.markdown('</div>', unsafe_allow_html=True)  # close input-panel
 
     # Encode categorical inputs using label encoders
     le_level = label_encoders.get('job_level', None)
@@ -844,10 +1153,20 @@ with tab4:
 
     st.markdown("---")
     st.markdown("### Prediction Result")
-    st.metric(f"Predicted Number of Skills ({pred_model_name})", f"{prediction:.1f}")
-    st.caption(f"Dataset average: {y.mean():.1f} skills | This prediction is "
-               f"{'above' if prediction > y.mean() else 'below'} average by "
-               f"{abs(prediction - y.mean()):.1f} skills")
+    above_avg = prediction > y.mean()
+    diff = abs(prediction - y.mean())
+    grad_color = "linear-gradient(135deg, #00CC96 0%, #059669 100%)" if above_avg else "linear-gradient(135deg, #636EFA 0%, #4854d4 100%)"
+    direction_text = "above" if above_avg else "below"
+    st.markdown(f"""
+    <div class="prediction-card" style="background: {grad_color};">
+        <div class="pred-label">Predicted Number of Skills ({pred_model_name})</div>
+        <div class="pred-value">{prediction:.1f}</div>
+        <div class="pred-subtitle">
+            Dataset average: {y.mean():.1f} skills &nbsp;&bull;&nbsp;
+            This prediction is <strong>{direction_text}</strong> average by {diff:.1f} skills
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     # SHAP waterfall for this custom input
     st.markdown("---")
