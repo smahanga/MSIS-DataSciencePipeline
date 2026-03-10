@@ -1,0 +1,46 @@
+{
+  "feature_cols": [
+    "job_level_encoded",
+    "job_type_encoded",
+    "search_country_encoded",
+    "state_encoded",
+    "title_length",
+    "title_word_count",
+    "company_name_length",
+    "day_of_week",
+    "month",
+    "avg_skill_length",
+    "is_top_company",
+    "has_communication",
+    "has_leadership",
+    "has_management",
+    "has_python",
+    "has_excel",
+    "has_sales",
+    "has_marketing",
+    "has_data",
+    "has_project_management",
+    "has_customer"
+  ],
+  "target_col": "num_skills",
+  "cat_cols": [
+    "job_level",
+    "job_type",
+    "search_country",
+    "state"
+  ],
+  "common_skills": [
+    "Communication",
+    "Leadership",
+    "Management",
+    "Python",
+    "Excel",
+    "Sales",
+    "Marketing",
+    "Data",
+    "Project Management",
+    "Customer"
+  ],
+  "sample_size": 80000,
+  "num_features": 21
+}

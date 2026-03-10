@@ -1,0 +1,12 @@
+streamlit
+scikit-learn
+lightgbm
+shap
+matplotlib
+seaborn
+plotly
+pandas
+numpy
+joblib
+pyarrow
+tensorflow
